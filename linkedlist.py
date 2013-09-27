@@ -3,49 +3,75 @@ class Node():
 
 		self.data = data
 		self.next = None
+"""
 	def __repr__(self):
 		return "Node(%r, %r)" %(self.data, self.next)
+"""
 
 class LinkedList():
 	def __init__(self):
 		self.head = None
-
+	"""
 	def __repr__(self):
 		return "List(%r)"%(self.head)
-
+	"""
 	def AddNodes(self, new_node):
 		if self.head == None:
 			self.head = new_node
-		elif self.head.next is None:
-			self.head.next = new_node
+		# elif self.head.next is None:
+		#	self.head.next = new_node
 		else:
 			node = self.head
-			print node.next
-
 			while node.next:
-				# node = node.next
-				if not node.next:
-					print "adding new_node %d" % new_node.data 
-					node.next = new_node
-				else:
-					node = node.next
+				node = node.next
+			node.next = new_node
+	def RemoveNodes(self, node):
+		if node.next == node:
+			return
+		if node.next.next:
+			node.next = node.next.next
+
 	def printall(self):
-		print "this is head %r" %(self.head)
+		print "this is head %r" %(self.head.data)
 		node = self.head
-		while node.next:				
-			print "this is node %r" %(node)
+		while node.next.data != self.head.data:	
+			print node.next.data , self.head.data		
+			print "this is node %s" %(node.data)
 			node = node.next
 
+	def MakeCircle(self):
+		node = self.head
+		while node.next != None:
+			node = node.next
+		node.next = self.head
 
-	# def MakeCircle(self):
-	# 	if node.next == None:
-	# 		node.next = head
 
 
 
-#node has no concept that it's in a list
-# node only knows itself and the next node. 
 
+chaircircle = LinkedList()
+for i in range(101):
+	node = Node(i)
+	chaircircle.AddNodes(node)
+chaircircle.MakeCircle()
+#chaircircle.printall()
+
+
+node = chaircircle.head
+
+while node.next != node:
+	chaircircle.RemoveNodes(node.next)
+	node = node.next
+
+chaircircle.head = node
+chaircircle.printall()
+
+
+
+
+
+
+"""
  
 ll = LinkedList()
 three = Node(3)
@@ -61,7 +87,7 @@ ll.AddNodes(one)
 ll.printall()
 #repr method for ll doesn't seem to work 
  
-
+"""
 
 
 
