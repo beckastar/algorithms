@@ -30,14 +30,6 @@ def populate_with_bombs(mine_grid):
 
 mine_grid_bombs = populate_with_bombs(mine_grid)
 
-def convert_coordinates(mine_grid_bombs, n):
-	a = n-y
-	b = x-1
-	for i in mine_grid_bombs:
-		for j in i:
-			mine_grid_bombs[i][j] = mine_grid_bombs[][i+1]
-
-
 def print_mine_grid(mine_grid_bombs):
 	for i in mine_grid:
 		yield(i)
@@ -46,8 +38,6 @@ print_mine = print_mine_grid(mine_grid)
 
 for i in print_mine:
 	print i 
-
-print print_mine_grid(mine_grid)
 
 def get_positions(mine_grid, item):
     if isinstance(mine_grid, list):
@@ -58,9 +48,6 @@ def get_positions(mine_grid, item):
         yield ()
 
 finder = get_positions(mine_grid, 'b')
-print finder 
-
-
 
 def get_bomb_list(mine_grid, bomb):
 	bombs = []
@@ -68,27 +55,59 @@ def get_bomb_list(mine_grid, bomb):
 		bombs.append(bomb)
 	return bombs
 
-get_bomb_list = get_bomb_list(mine_grid, 'b')
-print get_bomb_list 
+bomb_list = get_bomb_list(mine_grid, 'b')
+print bomb_list 
+
+def check_neighbors(bomb_list, popped): 
+	count = 0
+	for i in range(-1, 2):
+		for bomb in bomb_list:
+			if bomb[0]+i==popped[0] and bomb[1]==popped[1]:
+				count +=1 
+				bomb_list.remove(bomb)
+				check_neighbors(bomb_list, popped) 
+			if bomb[0]==popped[0] and bomb[1]==popped[1]+i:
+				count +=1 
+				bomb_list.remove(bomb)
+				check_neighbors(bomb_list, popped)
+			if bomb[0]+i==popped[0] and bomb[1]+i == popped[1]:
+				count+=1
+				bomb_list.remove(bomb)
+				check_neighbors(bomb_list, popped)
+	return count 
+
+check_neighbors = check_neighbors(bomb_list, popped)
+
+def through_list(bomb_list, popped, check_neighbors):
+	all_counts = []
+	while len(bomb_list)>0:
+		for bomb in bomb_list:
+			popped = bomb_list.pop()
+			all_counts.append(check_neighbors)
+
+
+
 
 # def convert_coordinates(get_bomb_list):
 # 	for bomb in bombs:
-# 	bomb[a][b] = bomb[][]
+# # 	bomb[a][b] = bomb[][]
+# def create_new_list(bomb_list, n):
+# 	# x= b-1
+# 	# y= n-a
+# 	xy_list = []
+# 	for bomb in bomb_list:
+# 		xy_list.append([])
+# 	for bomb in bomb_list:
+# 		print bomb[0]
+# 		for coordinate in xy_list:
+# 			coordinate[0] = bomb[1]-1
+# 			coordinate[1] = n - bomb[0]
+# 	return xy_list
 
-
-# def check_neighbors(mine_grid, finder, get_bomb_list):
-# 	blobs = {}
-# 	blobs[count] = 0
-# 	bomb = finder(next)
-# 	a = n-y
-# 	b = x-1
-# 	#bomb[a][b]
-# 	#to get x coordinate: bomb[] = bomb[0+1]
-# 	#to get y coordinate: 
-# 	x = bomb[]
-# 	y = bomb[1]
-
-
+# xy_list = create_new_list(bomb_list, n)
+# for i in xy_list:
+# 	print i
+  
 
 	# #if x == 0 and y == 1
 
@@ -151,10 +170,6 @@ print get_bomb_list
 # 	y = get_y(n) 
 # 	a = n-y
 # 	b = x-1
-# 	print "x", x
-# 	print "y", y 
-# 	print "a", a
-# 	print "b", b
 # 	if mine_grid[a][b] == 'b':
 # 		print "This was a hit. Game over."
 # 		for i in mine_grid:
