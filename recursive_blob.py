@@ -73,17 +73,20 @@ def check_neighbors(bomb_list, popped):
 			if bomb[0]+i==popped[0] and bomb[1]+i == popped[1]:
 				count+=1
 				bomb_list.remove(bomb)
-				check_neighbors(bomb_list, popped)
-	return count 
+				check_neighbors(bomb_list, popped) 
+	return count
 
-check_neighbors = check_neighbors(bomb_list, popped)
-
-def through_list(bomb_list, popped, check_neighbors):
+def through_list(check_neighbors, *args):
 	all_counts = []
+	popped = bomb_list.pop()
 	while len(bomb_list)>0:
 		for bomb in bomb_list:
-			popped = bomb_list.pop()
-			all_counts.append(check_neighbors)
+			i = check_neighbors(bomb_list, popped)
+			all_counts.append(i)
+	return all_counts
+
+print through_list(check_neighbors)
+
 
 
 
